@@ -1,0 +1,28 @@
+name: Deploy GAS to WebApp
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install clasp
+        run: npm install -g @google/clasp
+
+      - name: Restore clasp auth
+        run: echo "${{ secrets.CLASP_TOKEN }}" > ~/.clasprc.json
+
+      - name: Deploy to GAS
+        run: |
+          clasp push
+          clasp deploy --deploymentId ${{ secrets.GAS_DEPLOYMENT_ID }} --description "Auto deploy on $(date +'%Y-%m-%d %H:%M:%S')"
