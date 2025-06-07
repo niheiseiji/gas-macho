@@ -20,7 +20,7 @@ jobs:
         run: npm install -g @google/clasp
 
       - name: Restore clasp auth
-        run: echo "${{ secrets.CLASP_TOKEN_BASE64 }}" | base64 -d > ~/.clasprc.json
+        run: echo "${{ secrets.CLASP_TOKEN }}" > ~/.clasprc.json
 
       - name: Deploy to GAS
         run: |
